@@ -59,7 +59,7 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
     background-color: #9CA3AF;
     border-radius: 50%;
     /* We remove 'infinite' and shorten the duration */
-    animation: bounce 0.5s ease-in-out; 
+    animation: bounce 1.3s ease-in-out; 
 }
 /* --- END CHANGE --- */
 
@@ -74,4 +74,5 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(230, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0); } }
 .hidden { display: none !important; }
+
 
