@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             case 'ai-draft-btn':
                 choiceScreen.style.display = 'none';
-                startConversation("Все було чудово!");
+                startConversation("Все було чудово!"); // Pass Ukrainian text to AI
                 break;
 
             case 'manual-review-btn':
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (indicator) indicator.remove();
     }
     
-    // --- THIS FUNCTION IS NOW SIMPLIFIED FOR INSTANT RESPONSE ---
+    // --- SIMPLIFIED processAIResponse function ---
     function processAIResponse(text) {
         removeTypingIndicator();
         
@@ -129,13 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const statement = parts[0].trim();
             const question = parts[1].trim();
             
-            // Instantly add the first message
             addMessage('concierge', statement, false, false);
-            // Instantly add the second message (the question) and create the buttons
             handleFinalQuestion(question);
 
         } else {
-            // This logic for the final draft remains the same
             const quoteRegex = /"(.*?)"/s;
             const matches = text.match(quoteRegex);
             if (matches && matches[1].length > 10) {
