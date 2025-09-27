@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             case 'ai-draft-btn':
                 choiceScreen.style.display = 'none';
-                startConversation("Все було чудово!"); // Pass Ukrainian text to AI
+                startConversation("Все було чудово!");
                 break;
 
             case 'manual-review-btn':
@@ -120,21 +120,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (indicator) indicator.remove();
     }
     
+    // --- THIS FUNCTION IS NOW SIMPLIFIED FOR INSTANT RESPONSE ---
     function processAIResponse(text) {
         removeTypingIndicator();
+        
         if (text.includes("|")) {
             const parts = text.split('|');
             const statement = parts[0].trim();
             const question = parts[1].trim();
+            
+            // Instantly add the first message
             addMessage('concierge', statement, false, false);
-            setTimeout(() => {
-                showTypingIndicator();
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    handleFinalQuestion(question);
-                }, 300);
-            }, 500);
+            // Instantly add the second message (the question) and create the buttons
+            handleFinalQuestion(question);
+
         } else {
+            // This logic for the final draft remains the same
             const quoteRegex = /"(.*?)"/s;
             const matches = text.match(quoteRegex);
             if (matches && matches[1].length > 10) {
