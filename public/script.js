@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (indicator) indicator.remove();
     }
     
-    // --- SIMPLIFIED processAIResponse function ---
+    // --- THIS IS THE CORRECTED FUNCTION WITH NO DELAYS ---
     function processAIResponse(text) {
         removeTypingIndicator();
         
@@ -129,7 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const statement = parts[0].trim();
             const question = parts[1].trim();
             
+            // Instantly add the first message
             addMessage('concierge', statement, false, false);
+            // Instantly add the second message (the question) and create its buttons
             handleFinalQuestion(question);
 
         } else {
