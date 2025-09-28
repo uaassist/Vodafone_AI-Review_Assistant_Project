@@ -43,7 +43,7 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 #welcome-screen, #choice-screen { padding: 48px 24px; text-align: center; animation: fadeIn 0.5s ease-out; box-sizing: border-box; }
 .welcome-header { margin-bottom: 24px; }
 .welcome-avatar { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-.concierge-name-tag { margin-top: 16px; font-size: 18px; font-weight: 600; }
+.concierge-name-tag { margin-top: 16px; font-size: 12px; font-weight: 600; }
 .initial-bubble { background: var(--background-light); padding: 15px 20px; border-radius: 20px; border-bottom-left-radius: 6px; max-width: 100%; margin: 16px auto 0 auto; line-height: 1.6; font-size: 18px; text-align: center; }
 .initial-choices { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
 .choice-button { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--primary-color); background-color: #fff; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; box-sizing: border-box; }
@@ -82,3 +82,4 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 .review-draft-container.pulsing-highlight { animation: pulse-border 2s infinite ease-in-out; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(230, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0); } }
 .hidden { display: none !important; }
+
