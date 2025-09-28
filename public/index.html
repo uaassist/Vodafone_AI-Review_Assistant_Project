@@ -27,13 +27,46 @@
 
         <div id="content-area">
             <div id="welcome-screen">
-                <!-- ... існуючий код welcome-screen ... -->
+                <div class="welcome-header">
+                    <img src="https://ucarecdn.com/c679e989-5032-408b-ae8a-83c7d204c67d/Vodafonebot.webp" alt="Асистент TOBi" class="welcome-avatar">
+                    <p class="concierge-name-tag">Привіт! Я TOBi, ваш ШІ-помічник.</p>
+                </div>
+                <div class="initial-bubble">
+                     Будь ласка, поділіться враженнями про ваш нещодавній візит до магазину.
+                </div>
+                <div id="initial-choices" class="initial-choices">
+                    <button id="great-btn" class="choice-button single-line">🙂 Все було чудово!</button>
+                    <button id="okay-btn" class="choice-button single-line">😐 Все було добре.</button>
+                    <button id="bad-btn" class="choice-button single-line">🙁 Були деякі проблеми.</button>
+                </div>
             </div>
+
             <div id="choice-screen" class="hidden">
-                <!-- ... існуючий код choice-screen ... -->
+                 <div class="welcome-header">
+                    <img src="https://ucarecdn.com/c679e989-5032-408b-ae8a-83c7d204c67d/Vodafonebot.webp" alt="Асистент TOBi" class="welcome-avatar">
+                    <p class="concierge-name-tag">TOBi</p>
+                </div>
+                <div class="initial-bubble">
+                    Чудово! Будь ласка, знайдіть хвилинку, щоб залишити відгук у Google. Я можу допомогти його написати.
+                </div>
+                <p class="ukrainian-prompt">Як вам зручніше залишити відгук?</p>
+                <div class="initial-choices">
+                    <button id="ai-draft-btn" class="choice-button">
+                        <div class="button-main-text">🤖 TOBi напише чернетку для мене</div>
+                        <div class="button-sub-text">TOBi пише, ви публікуєте</div>
+                    </button>
+                    <button id="manual-review-btn" class="choice-button">
+                        <div class="button-main-text">📝 Я напишу відгук самостійно</div>
+                        <div class="button-sub-text">Відкрити сторінку відгуків Google</div>
+                    </button>
+                </div>
             </div>
+            
             <div id="chat-view" class="hidden">
-                <!-- ... існуючий код chat-view ... -->
+                <div id="chat-body" class="chat-body-styled"></div>
+                <div id="chat-input-area" class="chat-input-area-styled">
+                    <div id="quick-replies-container"></div>
+                </div>
             </div>
 
             <!-- ОНОВЛЕНИЙ ЕКРАН ВИРІШЕННЯ ПРОБЛЕМ -->
@@ -73,3 +106,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
