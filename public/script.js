@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             case 'ai-draft-btn':
                 choiceScreen.style.display = 'none';
-                startConversation("Все було чудово!"); // Pass Ukrainian text to AI
+                startConversation("Все було чудово!");
                 break;
 
             case 'manual-review-btn':
@@ -120,20 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (indicator) indicator.remove();
     }
     
-    // --- THIS IS THE CORRECTED FUNCTION WITH NO DELAYS ---
     function processAIResponse(text) {
         removeTypingIndicator();
-        
         if (text.includes("|")) {
             const parts = text.split('|');
             const statement = parts[0].trim();
             const question = parts[1].trim();
-            
-            // Instantly add the first message
             addMessage('concierge', statement, false, false);
-            // Instantly add the second message (the question) and create its buttons
             handleFinalQuestion(question);
-
         } else {
             const quoteRegex = /"(.*?)"/s;
             const matches = text.match(quoteRegex);
@@ -160,20 +154,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- ОСНОВНА ЗМІНА ТУТ ---
     function createEditableDraft(reviewText) {
         updateProgressBar(3);
         clearQuickReplies();
+        
         const container = document.createElement('div');
         container.className = 'review-draft-container';
+        // 1. Додаємо клас, що активує анімацію
+        container.classList.add('pulsing-highlight');
+
+        // 2. Створюємо одноразовий слухач подій, щоб видалити клас назавжди при першому дотику
+        container.addEventListener('focusin', () => {
+            container.classList.remove('pulsing-highlight');
+        }, { once: true }); // { once: true } гарантує, що подія спрацює лише один раз
+
         const textArea = document.createElement('textarea');
         textArea.id = 'review-draft-textarea';
         textArea.className = 'review-draft-textarea';
         textArea.value = reviewText;
+        
         container.appendChild(textArea);
         chatBody.prepend(container);
+
         addMessage('concierge', 'Ви можете відредагувати текст. Коли будете готові, натисніть кнопку нижче.', false, true);
         createPostButtons();
     }
+    // --- КІНЕЦЬ ЗМІНИ ---
 
     function createMultiSelectButtons(options, step) {
         clearQuickReplies();
