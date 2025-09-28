@@ -2,7 +2,7 @@
 
 :root {
     --primary-color: #E60000;
-    --recovery-color: #D97706; /* Теплий помаранчевий для негативного шляху */
+    /* --recovery-color: #D97706;  <-- Цей колір більше не потрібен */
     --text-dark: #1F2937;
     --text-muted: #6B7280;
     --border-color: #E5E7EB;
@@ -22,7 +22,7 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 .progress-segment.active { background-color: var(--primary-color); }
 #content-area { flex: 1; position: relative; overflow-y: auto; }
 #welcome-screen, #choice-screen, #chat-view, #recovery-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }
-#welcome-screen, #choice-screen { padding: 48px 24px; text-align: center; animation: fadeIn 0.5s ease-out; }
+#welcome-screen, #choice-screen, #recovery-screen { padding: 48px 24px; text-align: center; animation: fadeIn 0.5s ease-out; }
 .welcome-header { margin-bottom: 24px; }
 .welcome-avatar { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
 .concierge-name-tag { margin-top: 16px; font-size: 18px; font-weight: 600; }
@@ -65,19 +65,9 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(230, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0); } }
 .hidden { display: none !important; }
 
-/* --- Стилі для екрана вирішення проблем --- */
-#recovery-screen { padding: 24px; text-align: left; animation: fadeIn 0.5s ease-out; justify-content: space-between; }
-.recovery-title { font-size: 28px; font-weight: 700; margin: 0 0 12px 0; }
-.recovery-subtitle { font-size: 16px; color: var(--text-muted); line-height: 1.6; margin: 0 0 32px 0; }
-.recovery-choices { display: flex; flex-direction: column; gap: 16px; }
-.recovery-button { position: relative; width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--recovery-color); background-color: #fff; cursor: pointer; transition: all 0.2s; text-align: left; box-sizing: border-box; }
-.recovery-button:hover { background-color: #fffbeb; }
-.recommended-tag { position: absolute; top: -12px; left: 16px; background-color: #fff; padding: 2px 8px; font-size: 12px; font-weight: 600; color: var(--recovery-color); border: 1px solid var(--recovery-color); border-radius: 6px; }
-.button-content { display: flex; align-items: center; gap: 16px; }
-.button-icon { width: 32px; height: 32px; flex-shrink: 0; fill: var(--recovery-color); }
-.button-text-container { display: flex; flex-direction: column; gap: 2px; }
-.google-fallback { text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-color); }
-.google-fallback p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 16px 0; }
-.google-fallback button { background: none; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 16px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: var(--text-dark); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
-.google-fallback button:hover { border-color: #4285F4; color: #4285F4; }
-.google-fallback svg { width: 18px; height: 18px; }
+/* --- НОВИЙ СТИЛЬ ДЛЯ РОЗДІЛЮВАЧА --- */
+.separator {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 8px 0;
+}
