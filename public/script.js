@@ -1,14 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Element selectors for all views ---
     const contentArea = document.getElementById('content-area');
     const welcomeScreen = document.getElementById('welcome-screen');
     const choiceScreen = document.getElementById('choice-screen');
     const chatView = document.getElementById('chat-view');
+    const recoveryScreen = document.getElementById('recovery-screen');
     const chatBody = document.getElementById('chat-body');
     const quickRepliesContainer = document.getElementById('quick-replies-container');
-    const progressContainer = document.getElementById('progress-container'); // Оновлений селектор
+    const progressContainer = document.getElementById('progress-container');
 
-    // --- Single Event Listener using Event Delegation ---
     contentArea.addEventListener('click', (event) => {
         const button = event.target.closest('button');
         if (!button) return;
@@ -24,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             case 'okay-btn':
             case 'bad-btn':
-                startConversation(buttonText);
+                welcomeScreen.style.display = 'none';
+                recoveryScreen.classList.remove('hidden');
                 break;
             
             case 'ai-draft-btn':
@@ -36,21 +36,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.open(googleReviewUrl, '_blank');
                 choiceScreen.innerHTML = `<h1 class="main-title">Дякуємо!</h1><p class="subtitle">Ми відкрили сторінку відгуків Google у новій вкладці.</p>`;
                 break;
+            
+            case 'request-assistance-btn':
+                alert('Перенаправлення до чату підтримки...');
+                break;
+            case 'schedule-callback-btn':
+                alert('Перенаправлення на сторінку планування дзвінка...');
+                break;
+            case 'start-return-btn':
+                alert('Перенаправлення на сторінку повернення...');
+                break;
+            case 'google-review-fallback-btn':
+                window.open(googleReviewUrl, '_blank');
+                recoveryScreen.innerHTML = `<h1 class="main-title">Дякуємо!</h1><p class="subtitle">Ми відкрили сторінку відгуків Google у новій вкладці.</p>`;
+                break;
         }
     });
 
-    // --- ОСНОВНА ЗМІНА ТУТ ---
     function updateProgressBar(step) {
-        // Оновлюємо сегменти
         const segments = progressContainer.querySelectorAll('.progress-segment');
         segments.forEach((segment, index) => {
             segment.classList.toggle('active', index < step);
         });
-
-        // Оновлюємо текстові мітки
         const labels = progressContainer.querySelectorAll('.progress-label');
         labels.forEach((label, index) => {
-            // Підсвічуємо тільки поточний активний крок
             label.classList.toggle('active', index === step - 1);
         });
     }
@@ -59,14 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
         welcomeScreen.style.display = 'none';
         choiceScreen.style.display = 'none';
         chatView.classList.remove('hidden');
-
         if (firstMessage.includes("чудово")) {
-            progressContainer.classList.remove('hidden'); // Показуємо весь контейнер
+            progressContainer.classList.remove('hidden');
         }
-        
         getAIResponse(firstMessage);
     }
-    // --- КІНЕЦЬ ЗМІНИ ---
 
     let conversationHistory = [];
     const placeId = 'Your_Google_Place_ID_Here';
