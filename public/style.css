@@ -44,7 +44,7 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
     border-radius: 20px;
     border-bottom-left-radius: 6px;
     max-width: 100%;
-    margin: 6px auto 0 auto; /* Верхній відступ тепер 12px */
+    margin: 12px auto 0 auto; /* Верхній відступ тепер 12px */
     line-height: 1.6;
     font-size: 18px;
     text-align: center;
@@ -92,5 +92,6 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 .google-fallback p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 16px 0; }
 .google-fallback button { background: none; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 16px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: var(--text-dark); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
 .google-fallback button:hover { border-color: #4285F4; color: #4285F4; }
+
 
 
