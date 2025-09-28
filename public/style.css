@@ -22,7 +22,7 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 #content-area { flex: 1; position: relative; overflow-y: auto; }
 #welcome-screen, #choice-screen, #chat-view, #recovery-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }
 #welcome-screen, #choice-screen, #recovery-screen { padding: 48px 24px; text-align: center; animation: fadeIn 0.5s ease-out; }
-.welcome-header { margin-bottom: 24px; }
+.welcome-header { margin-bottom: 12px; }
 .welcome-avatar { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
 .concierge-name-tag { margin-top: 16px; font-size: 12px; font-weight: 600; }
 .initial-bubble { background: var(--background-light); padding: 15px 20px; border-radius: 20px; border-bottom-left-radius: 6px; max-width: 100%; margin: 10px auto 0 auto; line-height: 1.6; font-size: 18px; text-align: center; }
@@ -95,3 +95,4 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
     border-color: #4285F4;
     color: #4285F4;
 }
+
