@@ -21,11 +21,31 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 .progress-segment.active { background-color: var(--primary-color); }
 #content-area { flex: 1; position: relative; overflow-y: auto; }
 #welcome-screen, #choice-screen, #chat-view, #recovery-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }
-#welcome-screen, #choice-screen, #recovery-screen { padding: 48px 24px; text-align: center; animation: fadeIn 0.5s ease-out; }
-.welcome-header { margin-bottom: 32px; }
+
+/* 1. ЗМЕНШУЄМО ВЕРХНІЙ ВІДСТУП */
+#welcome-screen, #choice-screen, #recovery-screen {
+    padding: 24px 24px 48px; /* Верхній відступ тепер 24px, нижній - 48px */
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.welcome-header { margin-bottom: 24px; }
 .welcome-avatar { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-.concierge-name-tag { margin-top: 16px; font-size: 12px; font-weight: 600; }
-.initial-bubble { background: var(--background-light); padding: 15px 20px; border-radius: 20px; border-bottom-left-radius: 6px; max-width: 100%; margin: 10px auto 0 auto; line-height: 1.6; font-size: 18px; text-align: center; }
+.concierge-name-tag { margin-top: 16px; font-size: 18px; font-weight: 600; }
+
+/* 2. ЗМЕНШУЄМО ВІДСТУП НАД "БУЛЬБАШКОЮ" */
+.initial-bubble {
+    background: var(--background-light);
+    padding: 15px 20px;
+    border-radius: 20px;
+    border-bottom-left-radius: 6px;
+    max-width: 100%;
+    margin: 8px auto 0 auto; /* Верхній відступ тепер 8px */
+    line-height: 1.6;
+    font-size: 18px;
+    text-align: center;
+}
+
 .initial-choices { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
 .choice-button { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--primary-color); background-color: #fff; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; box-sizing: border-box; }
 .choice-button:hover { border-color: var(--border-color); }
@@ -64,36 +84,7 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(230, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0); } }
 .hidden { display: none !important; }
 
-/* --- ПОВЕРНУЛИ СТИЛІ ДЛЯ БЛОКУ GOOGLE --- */
-.google-fallback {
-    margin-top: auto; /* Притискає блок до низу */
-    padding-top: 24px;
-    border-top: 1px solid var(--border-color);
-}
-.google-fallback p {
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin: 0 0 16px 0;
-}
-.google-fallback button {
-    background: none;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-dark);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s;
-}
-.google-fallback button:hover {
-    border-color: #4285F4;
-    color: #4285F4;
-}
-
-
+.google-fallback { margin-top: auto; padding-top: 24px; border-top: 1px solid var(--border-color); }
+.google-fallback p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 16px 0; }
+.google-fallback button { background: none; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 16px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: var(--text-dark); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+.google-fallback button:hover { border-color: #4285F4; color: #4285F4; }
