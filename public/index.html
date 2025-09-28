@@ -69,47 +69,35 @@
                 </div>
             </div>
 
+           <!-- ПОВНІСТЮ ПЕРЕРОБЛЕНИЙ ЕКРАН ВИРІШЕННЯ ПРОБЛЕМ -->
             <div id="recovery-screen" class="hidden">
-                <h1 class="recovery-title">Нам дуже шкода це чути</h1>
-                <p class="recovery-subtitle">Схоже, ми не виправдали ваших очікувань. Ми хочемо негайно все виправити.</p>
-                
-                <div class="recovery-choices">
-                    <button id="request-assistance-btn" class="recovery-button">
-                        <div class="recommended-tag">[ Рекомендовано ]</div>
-                        <div class="button-content">
-                            <svg class="button-icon" viewBox="0 0 24 24"><path d="M12,1C5.9,1,1,5.9,1,12v3.5c0,1.7,1.3,3,3,3h1.5v-2H4c-0.6,0-1-1.1-1-2.5V12c0-5,4-9,9-9s9,4,9,9v1.5c0,1.4-0.4,2.5-1,2.5 h-1.5v2H20c1.7,0,3-1.3,3-3V12C23,5.9,18.1,1,12,1z M7.5,13.9c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5s1.5,0.7,1.5,1.5 S8.3,13.9,7.5,13.9z M16.5,13.9c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5s1.5,0.7,1.5,1.5S17.3,13.9,16.5,13.9z"/></svg>
-                            <div class="button-text-container">
-                                <div class="button-main-text">Зв'язатися зі службою підтримки</div>
-                                <div class="button-sub-text">Прямий зв'язок для швидкого вирішення</div>
-                            </div>
-                        </div>
+                <div class="welcome-header">
+                    <img src="https://ucarecdn.com/c679e989-5032-408b-ae8a-83c7d204c67d/Vodafonebot.webp" alt="Асистент TOBi" class="welcome-avatar">
+                    <p class="concierge-name-tag">TOBi</p>
+                </div>
+                <div class="initial-bubble">
+                    Нам дуже шкода це чути. Схоже, ми не виправдали ваших очікувань. Будь ласка, оберіть, як ми можемо негайно все виправити.
+                </div>
+                <div class="initial-choices">
+                    <button id="request-assistance-btn" class="choice-button">
+                        <div class="button-main-text">💬 Зв'язатися з підтримкою</div>
+                        <div class="button-sub-text">Прямий зв'язок для швидкого вирішення</div>
                     </button>
 
-                    <button id="schedule-callback-btn" class="recovery-button">
-                        <div class="button-content">
-                            <svg class="button-icon" viewBox="0 0 24 24"><path d="M19,3h-1V2h-2v1H8V2H6v1H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19,19H5V8h14V19z M16,11h-3V8h-2v3H8v2h3v3h2v-3h3V11z"/></svg>
-                            <div class="button-text-container">
-                                <div class="button-main-text">Замовити дзвінок від менеджера</div>
-                                <div class="button-sub-text">Оберіть зручний час для розмови</div>
-                            </div>
-                        </div>
+                    <button id="schedule-callback-btn" class="choice-button">
+                        <div class="button-main-text">🗓️ Замовити дзвінок менеджера</div>
+                        <div class="button-sub-text">Оберіть зручний час для розмови</div>
                     </button>
                     
-                    <button id="start-return-btn" class="recovery-button">
-                        <div class="button-content">
-                            <svg class="button-icon" viewBox="0 0 24 24"><path d="M17.65,6.35C16.2,4.9,14.21,4,12,4c-4.42,0-7.99,3.58-7.99,8s3.57,8,7.99,8c3.73,0,6.84-2.55,7.73-6h-2.08 c-0.82,2.33-3.04,4-5.65,4c-3.31,0-6-2.69-6-6s2.69-6,6-6c1.66,0,3.14,0.69,4.22,1.78L13,11h7V4L17.65,6.35z"/></svg>
-                            <div class="button-text-container">
-                                <div class="button-main-text">Почати процес повернення</div>
-                                <div class="button-sub-text">Перейти на сторінку самообслуговування</div>
-                            </div>
-                        </div>
+                    <button id="start-return-btn" class="choice-button">
+                        <div class="button-main-text">🔄 Почати процес повернення</div>
+                        <div class="button-sub-text">Перейти на сторінку самообслуговування</div>
                     </button>
-                </div>
 
-                <div class="google-fallback">
-                    <p>Бажаєте все ж таки залишити публічний відгук? Ваш досвід важливий, де б ви ним не поділилися.</p>
-                    <button id="google-review-fallback-btn">
-                        <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                    <hr class="separator">
+
+                     <button id="google-review-fallback-btn" class="choice-button single-line">
+                        <svg viewBox="0 0 48 48" style="width: 20px; height: 20px; flex-shrink: 0;"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
                         Залишити відгук у Google
                     </button>
                 </div>
