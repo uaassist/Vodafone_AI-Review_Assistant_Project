@@ -21,26 +21,30 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 .progress-segment.active { background-color: var(--primary-color); }
 #content-area { flex: 1; position: relative; overflow-y: auto; }
 #welcome-screen, #choice-screen, #chat-view, #recovery-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }
-
-/* 1. ЗМЕНШУЄМО ВЕРХНІЙ ВІДСТУП */
 #welcome-screen, #choice-screen, #recovery-screen {
-    padding: 24px 24px 48px; /* Верхній відступ тепер 24px, нижній - 48px */
+    padding: 24px 24px 48px;
     text-align: center;
     animation: fadeIn 0.5s ease-out;
 }
 
-.welcome-header { margin-bottom: 24px; }
+/* --- ОСНОВНА ЗМІНА ТУТ (1/2) --- */
+/* Зменшуємо відступ знизу для всього блоку з аватаром */
+.welcome-header {
+    margin-bottom: 12px; 
+}
+
 .welcome-avatar { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
 .concierge-name-tag { margin-top: 16px; font-size: 18px; font-weight: 600; }
 
-/* 2. ЗМЕНШУЄМО ВІДСТУП НАД "БУЛЬБАШКОЮ" */
+/* --- ОСНОВНА ЗМІНА ТУТ (2/2) --- */
+/* Встановлюємо точний відступ для бульбашки */
 .initial-bubble {
     background: var(--background-light);
     padding: 15px 20px;
     border-radius: 20px;
     border-bottom-left-radius: 6px;
     max-width: 100%;
-    margin: 2px auto 0 auto; /* Верхній відступ тепер 8px */
+    margin: 12px auto 0 auto; /* Верхній відступ тепер 12px */
     line-height: 1.6;
     font-size: 18px;
     text-align: center;
@@ -88,4 +92,3 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 .google-fallback p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 16px 0; }
 .google-fallback button { background: none; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 16px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: var(--text-dark); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
 .google-fallback button:hover { border-color: #4285F4; color: #4285F4; }
-
