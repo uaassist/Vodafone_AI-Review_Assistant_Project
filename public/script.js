@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatView = document.getElementById('chat-view');
     const chatBody = document.getElementById('chat-body');
     const quickRepliesContainer = document.getElementById('quick-replies-container');
-    const progressIndicator = document.getElementById('progress-indicator');
+    const progressContainer = document.getElementById('progress-container'); // Оновлений селектор
 
     // --- Single Event Listener using Event Delegation ---
     contentArea.addEventListener('click', (event) => {
@@ -39,14 +39,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- ОСНОВНА ЗМІНА ТУТ ---
     function updateProgressBar(step) {
-        const segments = progressIndicator.querySelectorAll('.progress-segment');
+        // Оновлюємо сегменти
+        const segments = progressContainer.querySelectorAll('.progress-segment');
         segments.forEach((segment, index) => {
-            if (index < step) {
-                segment.classList.add('active');
-            } else {
-                segment.classList.remove('active');
-            }
+            segment.classList.toggle('active', index < step);
+        });
+
+        // Оновлюємо текстові мітки
+        const labels = progressContainer.querySelectorAll('.progress-label');
+        labels.forEach((label, index) => {
+            // Підсвічуємо тільки поточний активний крок
+            label.classList.toggle('active', index === step - 1);
         });
     }
 
@@ -56,11 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
         chatView.classList.remove('hidden');
 
         if (firstMessage.includes("чудово")) {
-            progressIndicator.classList.remove('hidden');
+            progressContainer.classList.remove('hidden'); // Показуємо весь контейнер
         }
         
         getAIResponse(firstMessage);
     }
+    // --- КІНЕЦЬ ЗМІНИ ---
 
     let conversationHistory = [];
     const placeId = 'Your_Google_Place_ID_Here';
@@ -154,33 +160,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- ОСНОВНА ЗМІНА ТУТ ---
     function createEditableDraft(reviewText) {
         updateProgressBar(3);
         clearQuickReplies();
-        
         const container = document.createElement('div');
         container.className = 'review-draft-container';
-        // 1. Додаємо клас, що активує анімацію
         container.classList.add('pulsing-highlight');
-
-        // 2. Створюємо одноразовий слухач подій, щоб видалити клас назавжди при першому дотику
         container.addEventListener('focusin', () => {
             container.classList.remove('pulsing-highlight');
-        }, { once: true }); // { once: true } гарантує, що подія спрацює лише один раз
-
+        }, { once: true });
         const textArea = document.createElement('textarea');
         textArea.id = 'review-draft-textarea';
         textArea.className = 'review-draft-textarea';
         textArea.value = reviewText;
-        
         container.appendChild(textArea);
         chatBody.prepend(container);
-
         addMessage('concierge', 'Ви можете відредагувати текст. Коли будете готові, натисніть кнопку нижче.', false, true);
         createPostButtons();
     }
-    // --- КІНЕЦЬ ЗМІНИ ---
 
     function createMultiSelectButtons(options, step) {
         clearQuickReplies();
