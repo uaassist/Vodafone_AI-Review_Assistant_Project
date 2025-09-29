@@ -2,9 +2,11 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Vodafone Україна - ШІ-асистент зворотного зв'язку</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Підключення бібліотеки Lottie для анімацій -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 </head>
 <body>
     <div class="onboarding-container">
@@ -63,7 +65,16 @@
             </div>
             
             <div id="chat-view" class="hidden">
-                <div id="chat-body" class="chat-body-styled"></div>
+                <div id="skeleton-loader">
+                    <div class="skeleton-message user">
+                        <div class="skeleton-bubble"></div>
+                    </div>
+                    <div class="skeleton-message concierge">
+                        <div class="skeleton-avatar"></div>
+                        <div class="skeleton-bubble"></div>
+                    </div>
+                </div>
+                <div id="chat-body" class="chat-body-styled hidden"></div>
                 <div id="chat-input-area" class="chat-input-area-styled">
                     <div id="quick-replies-container"></div>
                 </div>
@@ -74,12 +85,10 @@
                     <img src="https://ucarecdn.com/c679e989-5032-408b-ae8a-83c7d204c67d/Vodafonebot.webp" alt="Асистент TOBi" class="welcome-avatar">
                     <p class="concierge-name-tag">TOBi</p>
                 </div>
-                <!-- ОСНОВНА ЗМІНА ТУТ: Текст розділено на бульбашку та підпис -->
                 <div class="initial-bubble">
                     Нам дуже шкода це чути. Схоже, ми не виправдали ваших очікувань.
                 </div>
                 <p class="ukrainian-prompt">Будь ласка, оберіть, як ми можемо негайно все виправити:</p>
-                <!-- КІНЕЦЬ ЗМІНИ -->
                 <div class="initial-choices">
                     <button id="request-assistance-btn" class="choice-button">
                         <div class="button-main-text">💬 Зв'язатися з підтримкою</div>
