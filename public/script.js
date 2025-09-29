@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const welcomeScreen = document.getElementById('welcome-screen');
     const choiceScreen = document.getElementById('choice-screen');
     const chatView = document.getElementById('chat-view');
+    const recoveryScreen = document.getElementById('recovery-screen');
     const chatBody = document.getElementById('chat-body');
     const quickRepliesContainer = document.getElementById('quick-replies-container');
     const progressContainer = document.getElementById('progress-container');
