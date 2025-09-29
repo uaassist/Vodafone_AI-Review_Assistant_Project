@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Element selectors for all views ---
     const contentArea = document.getElementById('content-area');
     const welcomeScreen = document.getElementById('welcome-screen');
     const choiceScreen = document.getElementById('choice-screen');
     const chatView = document.getElementById('chat-view');
-    const recoveryScreen = document.getElementById('recovery-screen');
     const chatBody = document.getElementById('chat-body');
     const quickRepliesContainer = document.getElementById('quick-replies-container');
     const progressContainer = document.getElementById('progress-container');
 
+    // --- Single Event Listener using Event Delegation ---
     contentArea.addEventListener('click', (event) => {
         const button = event.target.closest('button');
         if (!button) return;
@@ -132,12 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (indicator) indicator.remove();
     }
     
+    // --- ОСНОВНА ЗМІНА ТУТ ---
     function processAIResponse(text) {
-        removeTypingIndicator();
+        // Спочатку обробляємо текст і додаємо нові повідомлення
         if (text.includes("|")) {
             const parts = text.split('|');
             const statement = parts[0].trim();
             const question = parts[1].trim();
+            
             addMessage('concierge', statement, false, false);
             handleFinalQuestion(question);
         } else {
@@ -151,7 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 addMessage('concierge', text, false, false);
             }
         }
+        
+        // І тільки після того, як нові елементи додані в DOM, видаляємо індикатор
+        removeTypingIndicator();
     }
+    // --- КІНЕЦЬ ЗМІНИ ---
 
     function handleFinalQuestion(question) {
         addMessage('concierge', question, false, true);
