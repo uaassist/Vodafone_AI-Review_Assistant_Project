@@ -5,14 +5,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const choiceScreen = document.getElementById('choice-screen');
     const chatView = document.getElementById('chat-view');
     const recoveryScreen = document.getElementById('recovery-screen');
+    const skeletonLoader = document.getElementById('skeleton-loader');
     const chatBody = document.getElementById('chat-body');
     const quickRepliesContainer = document.getElementById('quick-replies-container');
     const progressContainer = document.getElementById('progress-container');
 
-    // --- Single Event Listener using Event Delegation ---
+    // --- Single Event Listener with HAPTIC FEEDBACK ---
     contentArea.addEventListener('click', (event) => {
         const button = event.target.closest('button');
         if (!button) return;
+
+        if (navigator.vibrate) {
+            navigator.vibrate(10);
+        }
 
         const buttonId = button.id;
         const buttonText = button.innerText.trim();
@@ -22,32 +27,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 welcomeScreen.style.display = 'none';
                 choiceScreen.classList.remove('hidden');
                 break;
-            
             case 'okay-btn':
             case 'bad-btn':
                 welcomeScreen.style.display = 'none';
                 recoveryScreen.classList.remove('hidden');
                 break;
-            
             case 'ai-draft-btn':
                 choiceScreen.style.display = 'none';
                 startConversation("Все було чудово!");
                 break;
-
             case 'manual-review-btn':
                 window.open(googleReviewUrl, '_blank');
                 choiceScreen.innerHTML = `<h1 class="main-title">Дякуємо!</h1><p class="subtitle">Ми відкрили сторінку відгуків Google у новій вкладці.</p>`;
                 break;
-            
-            case 'request-assistance-btn':
-                alert('Перенаправлення до чату підтримки...');
-                break;
-            case 'schedule-callback-btn':
-                alert('Перенаправлення на сторінку планування дзвінка...');
-                break;
-            case 'start-return-btn':
-                alert('Перенаправлення на сторінку повернення...');
-                break;
+            case 'request-assistance-btn': alert('Перенаправлення до чату підтримки...'); break;
+            case 'schedule-callback-btn': alert('Перенаправлення на сторінку планування дзвінка...'); break;
+            case 'start-return-btn': alert('Перенаправлення на сторінку повернення...'); break;
             case 'google-review-fallback-btn':
                 window.open(googleReviewUrl, '_blank');
                 recoveryScreen.innerHTML = `<h1 class="main-title">Дякуємо!</h1><p class="subtitle">Ми відкрили сторінку відгуків Google у новій вкладці.</p>`;
@@ -70,6 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
         welcomeScreen.style.display = 'none';
         choiceScreen.style.display = 'none';
         chatView.classList.remove('hidden');
+        
+        skeletonLoader.style.display = 'flex';
+        skeletonLoader.style.opacity = '1';
+        chatBody.classList.add('hidden');
+
         if (firstMessage.includes("чудово")) {
             progressContainer.classList.remove('hidden');
         }
@@ -100,10 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function getAIResponse(userMessage) {
-        addMessage('user', userMessage);
-        conversationHistory.push({ role: 'user', content: userMessage });
-        clearQuickReplies();
+        if (conversationHistory.length === 0) { // Only add the first message if it's the start
+            addMessage('user', userMessage);
+            conversationHistory.push({ role: 'user', content: userMessage });
+        }
+        
         showTypingIndicator();
+
         try {
             const response = await fetch('/api/concierge', {
                 method: 'POST',
@@ -114,6 +117,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             const aiMessage = data.message;
             conversationHistory.push(aiMessage);
+
+            if (skeletonLoader.style.display !== 'none') {
+                skeletonLoader.style.opacity = '0';
+                setTimeout(() => {
+                    skeletonLoader.style.display = 'none';
+                    chatBody.classList.remove('hidden');
+                }, 300);
+            }
+
             processAIResponse(aiMessage.content);
         } catch (error) {
             console.error("Fetch Error:", error);
@@ -121,27 +133,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    let lottieAnimation = null;
     function showTypingIndicator() {
         if (document.querySelector('.typing-indicator')) return;
         const wrapper = document.createElement('div');
         wrapper.className = 'message-wrapper concierge typing-indicator';
-        wrapper.innerHTML = `<img src="${avatarUrl}" class="chat-avatar" alt="TOBi друкує"><div class="bubble"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>`;
+        const avatarImg = document.createElement('img');
+        avatarImg.src = avatarUrl;
+        avatarImg.className = 'chat-avatar';
+        avatarImg.alt = 'TOBi друкує';
+        const lottieContainer = document.createElement('div');
+        lottieContainer.className = 'lottie-container';
+        wrapper.appendChild(avatarImg);
+        wrapper.appendChild(lottieContainer);
         chatBody.prepend(wrapper);
+        lottieAnimation = lottie.loadAnimation({
+            container: lottieContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'https://assets9.lottiefiles.com/packages/lf20_p8bfn5to.json'
+        });
     }
 
     function removeTypingIndicator() {
+        if (lottieAnimation) {
+            lottieAnimation.destroy();
+            lottieAnimation = null;
+        }
         const indicator = document.querySelector('.typing-indicator');
         if (indicator) indicator.remove();
     }
     
-    // --- ОСНОВНА ЗМІНА ТУТ ---
     function processAIResponse(text) {
-        // Спочатку обробляємо текст і додаємо нові повідомлення
+        removeTypingIndicator();
         if (text.includes("|")) {
             const parts = text.split('|');
             const statement = parts[0].trim();
             const question = parts[1].trim();
-            
             addMessage('concierge', statement, false, false);
             handleFinalQuestion(question);
         } else {
@@ -155,11 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 addMessage('concierge', text, false, false);
             }
         }
-        
-        // І тільки після того, як нові елементи додані в DOM, видаляємо індикатор
-        removeTypingIndicator();
     }
-    // --- КІНЕЦЬ ЗМІНИ ---
 
     function handleFinalQuestion(question) {
         addMessage('concierge', question, false, true);
@@ -199,22 +224,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = document.createElement('button');
             button.className = 'quick-reply-btn';
             button.innerText = optionText;
-            button.onclick = () => { button.classList.toggle('selected'); };
+            button.onclick = () => {
+                if (navigator.vibrate) { navigator.vibrate(10); }
+                button.classList.toggle('selected');
+            };
             quickRepliesContainer.appendChild(button);
         });
         const continueButton = document.createElement('button');
         continueButton.className = 'quick-reply-btn continue-btn';
         continueButton.innerText = 'Далі';
         continueButton.onclick = () => {
-            const selectedButtons = quickRepliesContainer.querySelectorAll('.quick-reply-btn.selected');
-            const selectedKeywords = Array.from(selectedButtons).map(btn => btn.innerText);
-            let combinedMessage = selectedKeywords.length > 0 ? selectedKeywords.join(', ') : "Нічого конкретного не виділено";
-            if (step === 'purpose') {
-                combinedMessage = `Мета візиту: ${combinedMessage}`;
-            } else if (step === 'experience') {
-                combinedMessage = `Враження від обслуговування: ${combinedMessage}`;
-            }
-            getAIResponse(combinedMessage);
+            addMessage('user', Array.from(quickRepliesContainer.querySelectorAll('.selected')).map(b => b.innerText).join(', '));
+            conversationHistory.push({ role: 'user', content: `Вибрані опції: ${Array.from(quickRepliesContainer.querySelectorAll('.selected')).map(b => b.innerText).join(', ')}` });
+            clearQuickReplies();
+            getAIResponse('');
         };
         quickRepliesContainer.appendChild(continueButton);
     }
