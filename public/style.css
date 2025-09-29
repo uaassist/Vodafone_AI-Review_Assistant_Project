@@ -21,35 +21,11 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 .progress-segment.active { background-color: var(--primary-color); }
 #content-area { flex: 1; position: relative; overflow-y: auto; }
 #welcome-screen, #choice-screen, #chat-view, #recovery-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }
-#welcome-screen, #choice-screen, #recovery-screen {
-    padding: 24px 24px 48px;
-    text-align: center;
-    animation: fadeIn 0.5s ease-out;
-}
-
-/* --- ОСНОВНА ЗМІНА ТУТ (1/2) --- */
-/* Зменшуємо відступ знизу для всього блоку з аватаром */
-.welcome-header {
-    margin-bottom: 12px; 
-}
-
+#welcome-screen, #choice-screen, #recovery-screen { padding: 24px 24px 48px; text-align: center; animation: fadeIn 0.5s ease-out; }
+.welcome-header { margin-bottom: 12px; }
 .welcome-avatar { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-.concierge-name-tag { margin-top: 16px; font-size: 12px; font-weight: 600; }
-
-/* --- ОСНОВНА ЗМІНА ТУТ (2/2) --- */
-/* Встановлюємо точний відступ для бульбашки */
-.initial-bubble {
-    background: var(--background-light);
-    padding: 15px 20px;
-    border-radius: 20px;
-    border-bottom-left-radius: 6px;
-    max-width: 100%;
-    margin: 12px auto 0 auto; /* Верхній відступ тепер 12px */
-    line-height: 1.6;
-    font-size: 18px;
-    text-align: center;
-}
-
+.concierge-name-tag { margin-top: 16px; font-size: 18px; font-weight: 600; }
+.initial-bubble { background: var(--background-light); padding: 15px 20px; border-radius: 20px; border-bottom-left-radius: 6px; max-width: 100%; margin: 12px auto 0 auto; line-height: 1.6; font-size: 18px; text-align: center; }
 .initial-choices { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
 .choice-button { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--primary-color); background-color: #fff; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; box-sizing: border-box; }
 .choice-button:hover { border-color: var(--border-color); }
@@ -80,8 +56,22 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 .review-draft-container:focus-within { animation: none; border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(230, 0, 0, 0.2); }
 .review-draft-textarea { width: 100%; height: 150px; padding: 0; border: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; resize: none; outline: none; }
 .typing-indicator .bubble { display: flex; align-items: center; padding: 12px 15px; }
-.dot { width: 8px; height: 8px; margin: 0 2px; background-color: #9CA3AF; border-radius: 50%; animation: bounce 1s ease-in-out; }
-.dot:nth-child(2) { animation-delay: 0.1s; } .dot:nth-child(3) { animation-delay: 0.2s; }
+
+/* --- ОСНОВНА ЗМІНА ТУТ --- */
+.dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #9CA3AF;
+    border-radius: 50%;
+    /* Повертаємо нескінченний цикл */
+    animation: bounce 1.3s infinite ease-in-out; 
+}
+/* --- КІНЕЦЬ ЗМІНИ --- */
+
+.dot:nth-child(2) { animation-delay: 0.1s; }
+.dot:nth-child(3) { animation-delay: 0.2s; }
+
 @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
 @keyframes pulse-border { 0%, 100% { border-color: var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05); } 50% { border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(230, 0, 0, 0.2); } }
 .review-draft-container.pulsing-highlight { animation: pulse-border 2s infinite ease-in-out; }
@@ -92,7 +82,3 @@ body { font-family: 'Inter', sans-serif; background-color: #fff; margin: 0; heig
 .google-fallback p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 16px 0; }
 .google-fallback button { background: none; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 16px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: var(--text-dark); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
 .google-fallback button:hover { border-color: #4285F4; color: #4285F4; }
-
-
-
-
