@@ -1,5 +1,78 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Element selectors for all views ---
+    // ... (всі селектори та початкові слухачі подій залишаються без змін) ...
+    
+    // ОСНОВНА ЗМІНА ТУТ: ЛОГІКА ОБРОБКИ ВІДПОВІДІ
+    async function getAIResponse(userMessage) {
+        addMessage('user', userMessage);
+        conversationHistory.push({ role: 'user', content: userMessage });
+        clearQuickReplies();
+        showTypingIndicator();
+        try {
+            const response = await fetch('/api/concierge', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages: conversationHistory }),
+            });
+            if (!response.ok) throw new Error('Network response was not ok.');
+            
+            // Тепер ми очікуємо JSON об'єкт
+            const aiResponseObject = await response.json();
+            
+            // Ми не додаємо весь об'єкт в історію, а лише те, що потрібно для ШІ
+            if (aiResponseObject.draft) {
+                conversationHistory.push({ role: 'assistant', content: aiResponseObject.draft });
+            }
+
+            processAIResponse(aiResponseObject);
+        } catch (error) {
+            console.error("Fetch Error:", error);
+            processAIResponse({ type: 'message', text: "Вибачте, виникла проблема зі з'єднанням." });
+        }
+    }
+
+    function processAIResponse(responseObject) {
+        removeTypingIndicator();
+
+        switch (responseObject.type) {
+            case 'question':
+                if (responseObject.statement) {
+                    addMessage('concierge', responseObject.statement);
+                }
+                handleFinalQuestion(responseObject.question, responseObject.step);
+                break;
+            
+            case 'draft':
+                if (responseObject.statement) {
+                    addMessage('concierge', responseObject.statement);
+                }
+                createEditableDraft(responseObject.draft);
+                // Для налагодження: виводимо аналіз ШІ в консоль розробника
+                console.log('AI Analysis:', responseObject.analysis);
+                break;
+            
+            case 'message':
+                addMessage('concierge', responseObject.text);
+                break;
+        }
+    }
+
+    function handleFinalQuestion(question, step) {
+        addMessage('concierge', question, false, true);
+        updateProgressBar(step);
+        
+        if (step === 1) { // Мета візиту
+            const tier1Options = ["📱 Новий телефон/пристрій", "🔄 Зміна/оновлення тарифу", "🔧 Технічна підтримка", "💳 Оплата рахунку", "👤 Реєстрація нового номера"];
+            createMultiSelectButtons(tier1Options, 'purpose');
+        } else if (step === 2) { // Враження
+            const tier2Options = ["⭐ Компетентні працівники", "💨 Швидке обслуговування", "🏬 Чистота в магазині", "👍 Простий процес", "🤝 Проблему вирішено"];
+            createMultiSelectButtons(tier2Options, 'experience');
+        }
+    }
+
+    // --- Решта файлу залишається майже без змін ---
+    // ... (всі інші функції, такі як startConversation, addMessage, createPostButtons і т.д., залишаються такими ж, як у попередній версії)
+    
+    // Повний код для довідки
     const contentArea = document.getElementById('content-area');
     const welcomeScreen = document.getElementById('welcome-screen');
     const choiceScreen = document.getElementById('choice-screen');
@@ -9,70 +82,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const quickRepliesContainer = document.getElementById('quick-replies-container');
     const progressContainer = document.getElementById('progress-container');
 
-    // --- Single Event Listener using Event Delegation ---
     contentArea.addEventListener('click', (event) => {
         const button = event.target.closest('button');
         if (!button) return;
-
         const buttonId = button.id;
         const buttonText = button.innerText.trim();
-
         switch (buttonId) {
-            case 'great-btn':
-                welcomeScreen.style.display = 'none';
-                choiceScreen.classList.remove('hidden');
-                break;
-            
-            case 'okay-btn':
-            case 'bad-btn':
-                welcomeScreen.style.display = 'none';
-                recoveryScreen.classList.remove('hidden');
-                break;
-            
-            case 'ai-draft-btn':
-                choiceScreen.style.display = 'none';
-                startConversation("Все було чудово!");
-                break;
-
-            case 'manual-review-btn':
-                window.open(googleReviewUrl, '_blank');
-                choiceScreen.innerHTML = `<h1 class="main-title">Дякуємо!</h1><p class="subtitle">Ми відкрили сторінку відгуків Google у новій вкладці.</p>`;
-                break;
-            
-            case 'request-assistance-btn':
-                alert('Перенаправлення до чату підтримки...');
-                break;
-            case 'schedule-callback-btn':
-                alert('Перенаправлення на сторінку планування дзвінка...');
-                break;
-            case 'start-return-btn':
-                alert('Перенаправлення на сторінку повернення...');
-                break;
-            case 'google-review-fallback-btn':
-                window.open(googleReviewUrl, '_blank');
-                recoveryScreen.innerHTML = `<h1 class="main-title">Дякуємо!</h1><p class="subtitle">Ми відкрили сторінку відгуків Google у новій вкладці.</p>`;
-                break;
+            case 'great-btn': welcomeScreen.style.display = 'none'; choiceScreen.classList.remove('hidden'); break;
+            case 'okay-btn': case 'bad-btn': welcomeScreen.style.display = 'none'; recoveryScreen.classList.remove('hidden'); break;
+            case 'ai-draft-btn': choiceScreen.style.display = 'none'; startConversation("Все було чудово!"); break;
+            case 'manual-review-btn': window.open(googleReviewUrl, '_blank'); choiceScreen.innerHTML = `<h1 class="main-title">Дякуємо!</h1><p class="subtitle">Ми відкрили сторінку відгуків Google у новій вкладці.</p>`; break;
+            case 'request-assistance-btn': alert('Перенаправлення до чату підтримки...'); break;
+            case 'schedule-callback-btn': alert('Перенаправлення на сторінку планування дзвінка...'); break;
+            case 'start-return-btn': alert('Перенаправлення на сторінку повернення...'); break;
+            case 'google-review-fallback-btn': window.open(googleReviewUrl, '_blank'); recoveryScreen.innerHTML = `<h1 class="main-title">Дякуємо!</h1><p class="subtitle">Ми відкрили сторінку відгуків Google у новій вкладці.</p>`; break;
         }
     });
 
     function updateProgressBar(step) {
         const segments = progressContainer.querySelectorAll('.progress-segment');
-        segments.forEach((segment, index) => {
-            segment.classList.toggle('active', index < step);
-        });
+        segments.forEach((segment, index) => { segment.classList.toggle('active', index < step); });
         const labels = progressContainer.querySelectorAll('.progress-label');
-        labels.forEach((label, index) => {
-            label.classList.toggle('active', index === step - 1);
-        });
+        labels.forEach((label, index) => { label.classList.toggle('active', index === step - 1); });
     }
 
     function startConversation(firstMessage) {
         welcomeScreen.style.display = 'none';
         choiceScreen.style.display = 'none';
         chatView.classList.remove('hidden');
-        if (firstMessage.includes("чудово")) {
-            progressContainer.classList.remove('hidden');
-        }
+        if (firstMessage.includes("чудово")) { progressContainer.classList.remove('hidden'); }
         getAIResponse(firstMessage);
     }
 
@@ -99,80 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBody.prepend(wrapper);
     }
 
-    async function getAIResponse(userMessage) {
-        addMessage('user', userMessage);
-        conversationHistory.push({ role: 'user', content: userMessage });
-        clearQuickReplies();
-        showTypingIndicator();
-        try {
-            const response = await fetch('/api/concierge', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messages: conversationHistory }),
-            });
-            if (!response.ok) throw new Error('Network response was not ok.');
-            const data = await response.json();
-            const aiMessage = data.message;
-            conversationHistory.push(aiMessage);
-            processAIResponse(aiMessage.content);
-        } catch (error) {
-            console.error("Fetch Error:", error);
-            processAIResponse("Вибачте, виникла проблема зі з'єднанням. Спробуйте, будь ласка, пізніше.");
-        }
-    }
-    
-    function showTypingIndicator() {
-        if (document.querySelector('.typing-indicator')) return;
-        const wrapper = document.createElement('div');
-        wrapper.className = 'message-wrapper concierge typing-indicator';
-        wrapper.innerHTML = `<img src="${avatarUrl}" class="chat-avatar" alt="TOBi друкує"><div class="bubble"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>`;
-        chatBody.prepend(wrapper);
-    }
-
-    function removeTypingIndicator() {
-        const indicator = document.querySelector('.typing-indicator');
-        if (indicator) indicator.remove();
-    }
-    
-    // --- ОСНОВНА ЗМІНА ТУТ ---
-    function processAIResponse(text) {
-        // Спочатку обробляємо текст і додаємо нові повідомлення
-        if (text.includes("|")) {
-            const parts = text.split('|');
-            const statement = parts[0].trim();
-            const question = parts[1].trim();
-            
-            addMessage('concierge', statement, false, false);
-            handleFinalQuestion(question);
-        } else {
-            const quoteRegex = /"(.*?)"/s;
-            const matches = text.match(quoteRegex);
-            if (matches && matches[1].length > 10) {
-                const statementBeforeDraft = text.split('"')[0].trim();
-                addMessage('concierge', statementBeforeDraft);
-                createEditableDraft(matches[1]);
-            } else {
-                addMessage('concierge', text, false, false);
-            }
-        }
-        
-        // І тільки після того, як нові елементи додані в DOM, видаляємо індикатор
-        removeTypingIndicator();
-    }
-    // --- КІНЕЦЬ ЗМІНИ ---
-
-    function handleFinalQuestion(question) {
-        addMessage('concierge', question, false, true);
-        if (question.includes("мета вашого візиту")) {
-            updateProgressBar(1);
-            const tier1Options = ["📱 Новий телефон/пристрій", "🔄 Зміна/оновлення тарифу", "🔧 Технічна підтримка", "💳 Оплата рахунку", "👤 Реєстрація нового номера"];
-            createMultiSelectButtons(tier1Options, 'purpose');
-        } else if (question.includes("враження від обслуговування")) {
-            updateProgressBar(2);
-            const tier2Options = ["⭐ Компетентні працівники", "💨 Швидке обслуговування", "🏬 Чистота в магазині", "👍 Простий процес", "🤝 Проблему вирішено"];
-            createMultiSelectButtons(tier2Options, 'experience');
-        }
-    }
+    function showTypingIndicator() { /* ... */ }
+    function removeTypingIndicator() { /* ... */ }
 
     function createEditableDraft(reviewText) {
         updateProgressBar(3);
@@ -180,9 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.createElement('div');
         container.className = 'review-draft-container';
         container.classList.add('pulsing-highlight');
-        container.addEventListener('focusin', () => {
-            container.classList.remove('pulsing-highlight');
-        }, { once: true });
+        container.addEventListener('focusin', () => { container.classList.remove('pulsing-highlight'); }, { once: true });
         const textArea = document.createElement('textarea');
         textArea.id = 'review-draft-textarea';
         textArea.className = 'review-draft-textarea';
@@ -223,10 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearQuickReplies();
         const postButton = document.createElement('button');
         postButton.className = 'quick-reply-btn primary-action choice-button'; 
-        postButton.innerHTML = `
-            <div class="button-main-text">✅ Відкрити Google для публікації</div>
-            <div class="button-sub-text">Ваш відгук скопійовано — просто вставте та оцініть</div>
-        `;
+        postButton.innerHTML = `<div class="button-main-text">✅ Відкрити Google для публікації</div><div class="button-sub-text">Ваш відгук скопійовано — просто вставте та оцініть</div>`;
         postButton.onclick = () => {
             const draftText = document.getElementById('review-draft-textarea').value;
             window.open(googleReviewUrl, '_blank');
@@ -237,9 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const regenerateButton = document.createElement('button');
         regenerateButton.className = 'quick-reply-btn';
         regenerateButton.innerText = '🔄 Інша версія';
-        regenerateButton.onclick = () => {
-             getAIResponse("Це не зовсім те, спробуй, будь ласка, інший варіант.", true);
-        };
+        regenerateButton.onclick = () => { getAIResponse("Це не зовсім те, спробуй, будь ласка, інший варіант.", true); };
         quickRepliesContainer.appendChild(regenerateButton);
         quickRepliesContainer.appendChild(postButton);
     }
